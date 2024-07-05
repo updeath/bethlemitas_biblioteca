@@ -34,7 +34,10 @@
     }
 </style>
 @section('content')
-<h1 class="my-3 text-2xl">Listados de Donaciones</h1>
+        <a href="{{route('donations.table')}}"
+                class="bg-[#95A5A6] top-[10%] right-[50%] hover:bg-gray-500 text-black hover:text-white p-2 rounded-full my-4" style="display:flex; justify-content:center; width:10rem">Generar tabla
+            </a>
+        <h1 class="my-3 text-2xl">Listados de Donaciones</h1>
 
         <form action="{{ route('donations.index') }}" method="GET" class="flex items-center">
             <input type="search" name="search" class="bg-purple-white shadow rounded-l border-0 p-2"
@@ -51,9 +54,6 @@
                 </svg>
             </button>
         </form>
-
-
-    <a href="{{route('donations.table')}}" class="bg-[#95A5A6] sm:absolute top-[10%] right-[50%] hover:bg-gray-500 text-black hover:text-white p-2 rounded-full my-4">Generar tabla</a>
 
     <div class="flex flex-wrap justify-start">
         @foreach ($donations as $donation)

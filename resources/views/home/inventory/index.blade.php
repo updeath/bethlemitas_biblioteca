@@ -55,7 +55,7 @@
                 </a>
             </div>
 
-        <form action="{{ route('discards.table') }}" method="GET" class="flex items-center mt-5">
+        <form action="{{ route('inventory.index') }}" method="GET" class="flex items-center mt-5">
             <input type="search" name="search" class="bg-purple-white shadow rounded-l border-0 p-2"
                 placeholder="Buscar">
             <button type="submit"

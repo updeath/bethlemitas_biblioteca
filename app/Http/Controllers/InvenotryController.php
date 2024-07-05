@@ -18,6 +18,7 @@ class InvenotryController extends Controller
      */
     public function index(Request $request)
         {
+            
             $query = Invenotry::query();
 
             if ($request->has('search')) {

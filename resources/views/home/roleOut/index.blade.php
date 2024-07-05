@@ -34,6 +34,11 @@
     }
 </style>
 @section('content')
+
+    <a href="{{ route('discards.table') }}"
+        class="bg-[#95A5A6] top-[10%] right-[50%] hover:bg-gray-500 text-black hover:text-white p-2 rounded-full my-4" style="display:flex; justify-content:center; width:10rem">Generar tabla
+    </a>
+
     <h1 class="my-3 text-2xl">Listados de Descartes</h1>
 
     <form action="{{ route('roleOut.index') }}" method="GET" class="flex items-center">
@@ -50,9 +55,7 @@
         </button>
     </form>
 
-    <a href="{{ route('discards.table') }}"
-        class="bg-[#95A5A6] sm:absolute top-[10%] right-[50%] hover:bg-gray-500 text-black hover:text-white p-2 rounded-full my-4">Generar
-        tabla</a>
+    
 
     <div class="flex flex-wrap justify-start">
         @foreach ($discardedBooks as $discardedBook)

@@ -27,11 +27,8 @@
                      <img src="{{asset('img/R.png')}}" class="h-6 mr-2" alt="Windster Logo">
                      <span class="self-center whitespace-nowrap"> <em>Bethlemitas - Biblioteca</em></span>
                   </a>
-
-                  
-                  
-               </div>
-               <div class="flex items-center">
+               
+                  <div class="flex items-center">
                   <button id="toggleSidebarMobileSearch" type="button" class="lg:hidden text-gray-500 hover:text-gray-900 hover:bg-gray-100 p-2 rounded-lg">
                      <span class="sr-only">Search</span>
                      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -40,6 +37,9 @@
                   </button>
                </div>
 
+                  
+                  
+               </div>
                <div class="flex items-center">
                   <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                      <button type="button" class="flex text-sm rounded-full md:me-0 focus:ring-4 focus:ring-gray-300  id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
@@ -152,9 +152,9 @@
                   </div>
                </div>
            </aside>
-           <div id="main-content" class="bg-[#D5DBDB] relative overflow-y-auto lg:ml-64">
+           <div id="main-content" class="bg-[#D5DBDB] relative overflow-y-auto lg:ml-64" style="width:80%; position:absolute; top:5rem">
                <main>
-                  <div class="pt-[7%] px-9 my-3 max-w-full">
+                  <div class=" px-9 my-3 max-w-full" >
                      @yield('content')
                   </div>
                </main>
