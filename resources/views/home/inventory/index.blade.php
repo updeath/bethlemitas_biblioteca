@@ -77,80 +77,43 @@
             <table class="min-w-full bg-white border border-gray-300 rounded-lg overflow-hidden">
                 <thead class="bg-gray-800 text-white">
                     <tr>
-                        <th class="py-3 px-4">Código</th>
+                        <th class="py-3 px-4">Clasif PGC</th>
                         <th class="py-3 px-4">Título</th>
                         <th class="py-3 px-4">Autor</th>
-                        <th class="py-3 px-4">Editorial</th>
                         <th class="py-3 px-4">Cantidad</th>
-                        <th class="py-3 px-4">Categoria</th>
-                        <th class="py-3 px-4">Área</th>
+                        <th class="py-3 px-4">Editorial</th>
+                        <th class="py-3 px-4">Fecha de publicación</th>
                         <th class="py-3 px-4">Estado</th>
-                        <th class="py-3 px-4">Clasif-pgc</th>
-                        <th class="py-3 px-4">Actividad</th>
-                        <th class="py-3 px-4">Año</th>
+                        <th class="py-3 px-4">Ubicación</th>
+                        <th class="py-3 px-4">Actividad en la que se ocupa</th>
+                        <th class="py-3 px-4">Donado</th>
+                        <th class="py-3 px-4">Descartado</th>
                         <th class="py-3 px-4">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($inventory as $invenotries)
+                    @foreach ($inventory as $inventories)
                         <!-- Ejemplo de una fila -->
                         <tr class="transition-all hover:bg-gray-100">
-                            <td class="py-3 px-4">{{ $invenotries->code }}</td>
-                            <td class="py-3 px-4">{{ $invenotries->title }}</td>
-                            <td class="py-3 px-4">{{ $invenotries->author }}</td>
-                            <td class="py-3 px-4">{{ $invenotries->editorial }}</td>
-                            <td class="py-3 px-4">{{ $invenotries->amount }}</td>
-                            <td class="py-3 px-4">{{ $invenotries->category }}</td>
-                            <td class="py-3 px-4">{{ $invenotries->area }}</td>
+                            <td class="py-3 px-4">{{ $inventories->classification->name_classification}}</td>
+                            <td class="py-3 px-4">{{ $inventories->title }}</td>
+                            <td class="py-3 px-4">{{ $inventories->author->name_author }}</td>
+                            <td class="py-3 px-4">{{ $inventories->amount }}</td>
+                            <td class="py-3 px-4">{{ $inventories->editorial->name_editorial }}</td>
+                            <td class="py-3 px-4">{{ $inventories->publication_date }}</td>
+                            <td class="py-3 px-4">{{ $inventories->estado->state }}</td>
+                            <td class="py-3 px-4">{{ $inventories->ubicacion->location }}</td>
+                            <td class="py-3 px-4">{{ $inventories->actividad->activity_occupation }}</td>
                             <td class="py-3 px-4">
-                                @if ($invenotries->status == 'well')
-                                    <span
-                                        class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                        Bueno
-                                    </span>
-                                @elseif ($invenotries->status == 'regular')
-                                    <span
-                                        class="px-2 py-1 font-semibold leading-tight text-green-700 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-100">
-                                        Regular
-                                    </span>
-                                @elseif ($invenotries->status == 'bad')
-                                    <span
-                                        class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-700">
-                                        Malo
-                                    </span>
-                                @else
-                                    {{ $invenotries->status }}
-                                @endif
-                            </td>
-                            <td class="py-3 px-4">{{ $invenotries->clasifpgc }}</td>
-                            <td class="py-3 px-4">
-                                @if ($invenotries->activite == 'reference_material')
-                                    <span>Material de Referencia</span>
-                                @elseif ($invenotries->activite == 'investigation')
-                                    <span>Invenstigacion</span>
-                                @elseif ($invenotries->activite == 'teaching')
-                                    <span>Enseñanza</span>
-                                @elseif ($invenotries->activite == 'consultation')
-                                    <span>Consultar</span>
-                                @elseif ($invenotries->activite == 'languagues')
-                                    <span>Lenguas</span>
-                                @elseif ($invenotries->activite == 'languagues')
-                                    <span>Lectura</span>
-                                @else
-                                    {{ $invenotries->activite }}
-                                @endif
-                            </td>
-                            <td class="py-3 px-4">{{ $invenotries->year }}</td>
-                            <td class="py-3 px-4">
-                                <a href="{{ route('inventory.edit', ['inventory' => $invenotries->id]) }}"
+                                <a href="{{ route('inventory.edit', ['inventory' => $inventories->id]) }}"
                                     class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold px-2 py-1 rounded-full transition duration-300">
                                     Editar
                                 </a>
                                 <div class="py-1"></div>
-                                <form id="delete-form-{{ $invenotries->id }}" action="{{ route('inventory.destroy', $invenotries->id) }}" method="POST">
+                                <form id="delete-form-{{ $inventories->id }}" action="{{ route('inventory.destroy', $inventories->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="inline-block bg-red-500 hover:bg-red-600 rounded-full px-2 py-1  font-semibold text-white mr-1 mb-1 form-delete" data-id="{{ $invenotries->id }}">
+                                    <button type="submit" class="inline-block bg-red-500 hover:bg-red-600 rounded-full px-2 py-1  font-semibold text-white mr-1 mb-1 form-delete" data-id="{{ $inventories->id }}">
                                         Eliminar
                                     </button>
                                 </form>

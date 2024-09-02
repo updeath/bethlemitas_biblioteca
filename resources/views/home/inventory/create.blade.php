@@ -42,18 +42,16 @@
         <div>
             <h1 class="text-2xl font-bold "><em>Crear Registro</em></h1>
 
-            <!-- Codigo -->
-            <div class="mb-3">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="code">Código</label>
-                <input id="code" name="code" value="{{ old('code') }}" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Código">
-                @error('code')
-                    <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Incorrecto</span></p>
-                @enderror
-            </div>
-
             <div class="mb-3">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="clasifpgc">CLASIF PGC</label>
-                <input placeholder="CLASIF PGC" min="99" id="clasifpgc" name="clasifpgc" value="{{ old('clasifpgc') }}" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number">
+                <select id="mySelect" name="clasifpgc" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">Select a classification</option>
+                    @foreach ($classifications as $classification)
+                        <option value="{{ $classification->id }}" {{ old('clasifpgc') == $classification->id ? 'selected' : '' }}>
+                            {{ $classification->name_classification }}
+                        </option>
+                    @endforeach
+                </select>
                 @error('clasifpgc')
                     <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Incorrecto</span></p>
                 @enderror

@@ -28,17 +28,15 @@
                      <span class="self-center whitespace-nowrap"> <em>Bethlemitas - Biblioteca</em></span>
                   </a>
                
-                  <div class="flex items-center">
-                  <button id="toggleSidebarMobileSearch" type="button" class="lg:hidden text-gray-500 hover:text-gray-900 hover:bg-gray-100 p-2 rounded-lg">
-                     <span class="sr-only">Search</span>
-                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <div class="flex items-center" style="display:none">
+                     <button id="toggleSidebarMobileSearch" type="button" class="lg:hidden text-gray-500 hover:text-gray-900 hover:bg-gray-100  p-2 rounded-lg">
+                        <span class="sr-only">Search</span>
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
-                     </svg>
-                  </button>
-               </div>
+                        </svg>
+                     </button>
+                  </div>
 
-                  
-                  
                </div>
                <div class="flex items-center">
                   <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
@@ -86,37 +84,65 @@
             </div>
          </div>
       </nav>
-           <aside id="sidebar" class="fixed hidden z-20 h-full top-0 left-0 pt-16 flex lg:flex flex-shrink-0 flex-col w-64 transition-width duration-75 " aria-label="Sidebar">
-              <div class="relative flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-[#D5DBDB]  pt-0">
-                 <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-                    <div class="flex-1 px-3 bg-[#D5DBDB] divide-y space-y-1">
-                       <ul class="space-y-2 pb-2">
-                          <li>
-                             <form action="#" method="GET" class="lg:hidden">
-                                <label for="mobile-search" class="sr-only">Buscar</label>
-                                <div class="relative">
-                                   <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                      <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                         <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-                                      </svg>
-                                   </div>
-                                   <input type="text" name="email" id="mobile-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-cyan-600 focus:ring-cyan-600 block w-full pl-10 p-2.5" placeholder="Buscar">
-                                </div>
-                             </form>
-                          </li>
-                          <li>
+            <aside id="sidebar" class="fixed hidden z-20 h-full top-0 left-0 pt-16 flex lg:flex flex-shrink-0 flex-col w-64 transition-width duration-75 " aria-label="Sidebar">
+               <div class="relative flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-[#D5DBDB]  pt-0">
+                  <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+                     <div class="flex-1 px-3 bg-[#D5DBDB] divide-y space-y-1">
+                        <ul class="space-y-2 pb-2">
+                           <li>
+                              <form action="#" method="GET" class="lg:hidden">
+                                 <label for="mobile-search" class="sr-only">Buscar</label>
+                                 <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                       <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                          <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                                       </svg>
+                                    </div>
+                                    <input type="text" name="email" id="mobile-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-cyan-600 focus:ring-cyan-600 block w-full pl-10 p-2.5" placeholder="Buscar">
+                                 </div>
+                              </form>
+                           </li>
+                           <li>
 
-                           <a href="{{route('home')}}" class="flex items-center px-6 py-2 mt-4 bg-[#95A5A6] text-gray-900 rounded-lg font-medium" >
-                              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                              <a href="{{route('home')}}" class="flex items-center px-6 py-2 mt-4 bg-[#95A5A6] text-gray-900 rounded-lg font-medium" >
+                                 <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                        d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z">
                                     </path>
-                              </svg>
-                              <span class="mx-3">Página Principal</span>
-                           </a>
+                                 </svg>
+                                 <span class="mx-3">Página Principal</span>
+                              </a>
 
+                              <div x-data="{ isOpen: false }">
+                                 <a @click="isOpen = !isOpen" class="flex items-center px-5 py-2 mt-4 hover:bg-[#95A5A6] hover:text-gray-900 hover:rounded-lg font-medium cursor-pointer" >
+                                 <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 5v14m-7-7h14" />
+                                 </svg>
+                                    <span class="mx-3">Panel de creación</span>
+                                 </a>
 
+                                 <div x-show="isOpen" class="ml-10">
+                                    <a href=""
+                                    class="flex items-center px-3  mt-2 hover:bg-[#95A5A6] hover:text-gray-900 hover:rounded-lg font-medium">
+                                          <!-- Icono si es necesario -->
+                                          <span class="mx-3">• Añadir nueva Editorial</span>
+                                    </a>
+
+                                    <a href=""
+                                    class="flex items-center px-3  mt-2 hover:bg-[#95A5A6] hover:text-gray-900 hover:rounded-lg font-medium">
+                                       <!-- Icono si es necesario -->
+                                       <span class="mx-3">• Añadir nuevo Autor</span>
+                                    </a>
+                                    <a href=""
+                                       class="flex items-center px-3  mt-4 hover:bg-[#95A5A6] hover:text-gray-900 hover:rounded-lg font-medium">
+                                       <!-- Icono si es necesario -->
+                                       <span class="mx-3">• Añadir nueva clasificación </span>
+                                    </a>
+                                    <!-- Puedes agregar más sub-enlaces aquí si es necesario -->
+                                 </div>
+                              </div>
+                     
                            <a class="flex items-center px-5 py-2 mt-4 hover:bg-[#95A5A6] hover:text-gray-900 hover:rounded-lg font-medium" href="{{route('inventory.create')}}">
                            <svg class="h-6 w-6 "  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />  <polyline points="14 2 14 8 20 8" />  <line x1="12" y1="18" x2="12" y2="12" />  <line x1="9" y1="15" x2="15" y2="15" /></svg>
                               <span class="mx-3">Crear Registro</span>
@@ -134,12 +160,12 @@
                            </a>
 
 
-                           <a class="flex items-center px-5 py-2 mt-4 hover:bg-[#95A5A6] hover:text-gray-900 hover:rounded-lg font-medium" href="{{route('donations.index')}}">
+                           <a class="flex items-center px-5 py-2 mt-4 hover:bg-[#95A5A6] hover:text-gray-900 hover:rounded-lg font-medium" href="">
                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M6.012 18H21V4c0-1.103-.897-2-2-2H6c-1.206 0-3 .799-3 3v14c0 2.201 1.794 3 3 3h15v-2H6.012C5.55 19.988 5 19.806 5 19s.55-.988 1.012-1zM8 9h3V6h2v3h3v2h-3v3h-2v-3H8V9z"></path></svg>
                               <span class="mx-3">Donaciones</span>
                            </a>
 
-                           <a class="flex items-center px-5 py-2 mt-4 hover:bg-[#95A5A6] hover:text-gray-900 hover:rounded-lg font-medium" href="{{route('roleOut.index')}}">
+                           <a class="flex items-center px-5 py-2 mt-4 hover:bg-[#95A5A6] hover:text-gray-900 hover:rounded-lg font-medium" href="">
                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:; "><path d="m21.484 11.125-9.022-5a1 1 0 0 0-.968-.001l-8.978 4.96a1 1 0 0 0-.003 1.749l9.022 5.04a.995.995 0 0 0 .973.001l8.978-5a1 1 0 0 0-.002-1.749z"></path><path d="M20.515 15.126 12 19.856l-8.515-4.73-.971 1.748 9 5a1 1 0 0 0 .971 0l9-5-.97-1.748zM16 4h6v2h-6z"></path></svg>
                                  <span class="mx-3">Descartes</span>
                            </a>
