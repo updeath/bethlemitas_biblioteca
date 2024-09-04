@@ -36,19 +36,19 @@
 @section('content')
 <div class="sm:overflow:hidden bg-white shadow-md rounded-lg px-8 my-8 flex items-center" style="width: 88%; padding: 5rem ">
     <!-- Formulario en dos columnas -->
-    <form class="grid grid-cols-1 md:grid-cols-2 gap-4" action="{{ route('inventory.store') }}" method="POST" enctype="multipart/form-data">
+    <form class="grid grid-cols-1 md:grid-cols-2 gap-4" action="{{ route('inventory.store') }}" method="POST" enctype="multipart/form-data" style="width:100%">
         @csrf
         <!-- Columna 1 -->
-        <div>
+        <div >
             <h1 class="text-2xl font-bold "><em>Crear Registro</em></h1>
 
             <div class="mb-3">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="clasifpgc">CLASIF PGC</label>
-                <select id="mySelect" name="clasifpgc" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <select id="clasifpgc" name="clasifpgc" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     <option value="">Select a classification</option>
                     @foreach ($classifications as $classification)
                         <option value="{{ $classification->id }}" {{ old('clasifpgc') == $classification->id ? 'selected' : '' }}>
-                            {{ $classification->name_classification }}
+                            {{ $classification->clasifPGC }}
                         </option>
                     @endforeach
                 </select>
@@ -70,7 +70,14 @@
             <!-- Editorial -->
             <div class="mb-3">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="editorial">Editorial</label>
-                <input type="text" id="editorial" name="editorial" value="{{ old('editorial') }}" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Editorial">
+                <select id="editorial" name="editorial" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">Select a classification</option>
+                    @foreach ($editorials as $editorial)
+                        <option value="{{ $editorial->id }}" {{ old('editorial') == $editorial->id ? 'selected' : '' }}>
+                            {{ $editorial->name_editorial }}
+                        </option>
+                    @endforeach
+                </select>
                 @error('editorial')
                     <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Incorrecto</span></p>
                 @enderror
@@ -79,144 +86,110 @@
             <!-- Cantidad de libros -->
             <div class="mb-3">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="amount">Cantidad</label>
-                <input type="number" id="amount" name="amount" value="{{ old('amount') }}" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Cantidad">
+                <div class="container_input" style="display: flex">
+                    <button type="button" onclick="buttonMenos()" style="background: #f1f5e9; border: none; cursor: pointer;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 13H5v-2h14v2z"></path>
+                        </svg>
+                    </button>
+                    <input type="number" id="amount" name="amount" value="{{ old('amount') }}" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Cantidad">
+                    <button type="button" onclick="buttonMas()" style="background: #f1f5e9; border: none; cursor: pointer;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path>
+                        </svg>
+                    </button>
+                </div>
                 @error('amount')
                     <p class=" text-sm text-red-600 dark:text-red-500"><span class="font-medium">Incorrecto</span></p>
                 @enderror
             </div>
-            <div class="mb-3 col-span-6 sm:col-span-3">
-                <label class="block text-sm font-bold text-gray-700 mb-2">Categoría:</label>
-                <select id="category" name="category" value="{{ old('category') }}" class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300">
-                    <option selected disabled value="">Seleccione una categoría</option>
-                    <option value="libro" {{ old('category') == 'libro' ? 'selected' : '' }}>Libro</option>
-                    <option value="tornos" {{ old('category') == 'tornos' ? 'selected' : '' }}>Tornos</option>
-                    <option value="cartilla" {{ old('category') == 'cartilla' ? 'selected' : '' }}>Cartilla</option>
-                    <option value="afiche" {{ old('category') == 'afiche' ? 'selected' : '' }}>Afiche</option>
-                    <option value="folleto" {{ old('category') == 'folleto' ? 'selected' : '' }}>Folleto</option>
-                    <option value="texto" {{ old('category') == 'texto' ? 'selected' : '' }}>Texto</option>
-                </select>
-                @error('category')
-                    <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Incorrecto</span></p>
-                @enderror
-            </div>
-
-        </div>
-        <div class="sm:pl-10 pt-7" >
 
             <!-- Autor del libro -->
             <div class="mb-3">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="author">Autor del libro</label>
-                <input id="author" name="author" value="{{ old('author') }}" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Autor">
+                <select id="author" name="author" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">Select a classification</option>
+                    @foreach ($authors as $author)
+                        <option value="{{ $author->id }}" {{ old('author') == $author->id ? 'selected' : '' }}>
+                            {{ $author->name_author }}
+                        </option>
+                    @endforeach
+                </select>
                 @error('author')
                     <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Incorrecto</span></p>
                 @enderror
             </div>
 
-            <!-- Area -->
-            <div class="mb-3 col-span-6 sm:col-span-3">
-                <label for="area" class="block text-sm font-bold text-gray-700 mb-2">Área:</label>
-                <select id="area" name="area" value="{{ old('area') }}" class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300">
-                    <option selected disabled value="">Seleccione un área</option>
-                    <option value="Arte" {{ old('area') == 'arte' ? 'selected' : '' }}>Arte</option>
-                    <option value="Atlas universal" {{ old('area') == 'Atlasuniversal' ? 'selected' : '' }}>Atlas universal</option>
-                    <option value="Aprendizaje" {{ old('area') == 'Aprendizaje' ? 'selected' : '' }}>Aprendizaje</option>
-                    <option value="Biblias" {{ old('area') == 'Biblias' ? 'selected' : '' }}>Biblias</option>
-                    <option value="Ciencia" {{ old('area') == 'ciencia' ? 'selected' : '' }}>Ciencia</option>
-                    <option value="Ciencias sociales" {{ old('area') == 'sociales' ? 'selected' : '' }}>Ciencias sociales</option>
-                    <option value="Ciencias políticas y económicas" {{ old('area') == 'Cienciaspolíticaseconómicas' ? 'selected' : '' }}>Ciencias políticas y económicas</option>
-                    <option value="Ciencia naturales" {{ old('area') == 'Ciencianaturales' ? 'selected' : '' }}>Ciencias Naturales</option>
-                    <option value="Ciencia de la Computación" {{ old('area') == 'CienciaComputer' ? 'selected' : '' }}>Ciencia de la Computación</option>
-                    <option value="Ciencias de la Salud" {{ old('area') == 'Cienciasalud' ? 'selected' : '' }}>Ciencias de la Salud</option>
-                    <option value="Ciencias naturales y biología" {{ old('area') == 'Cienciasnaturalesbiología' ? 'selected' : '' }}>Ciencias naturales y biología</option>
-                    <option value="Comportamiento y salud" {{ old('area') == 'Comportamientosalud' ? 'selected' : '' }}>Comportamiento y salud</option>
-                    <option value="Diccionarios inglés" {{ old('area') == 'Diccionariosinglés' ? 'selected' : '' }}>Diccionarios inglés</option>
-                    <option value="Diccionarios español" {{ old('area') == 'Diccionariosespañol' ? 'selected' : '' }}>Diccionarios español</option>
-                    <option value="Educación en Salud" {{ old('area') == 'Educacionsalud' ? 'selected' : '' }}>Educación en Salud</option>
-                    <option value="Economía Política" {{ old('area') == 'EconomiaPolitica' ? 'selected' : '' }}>Economía Política</option>
-                    <option value="Ética y Valores" {{ old('area') == 'ÉticaValores' ? 'selected' : '' }}>Ética y Valores</option>
-                    <option value="Educación" {{ old('area') == 'Educación' ? 'selected' : '' }}>Educación</option>
-                    <option value="Ecología" {{ old('area') == 'Ecología' ? 'selected' : '' }}>Ecología</option>
-                    <option value="Energía" {{ old('area') == 'Energía' ? 'selected' : '' }}>Energía</option>
-                    <option value="Fichas de ingles" {{ old('area') == 'Fichasingles' ? 'selected' : '' }}>Fichas de ingles</option>
-                    <option value="Física matemática" {{ old('area') == 'Físicamatemática' ? 'selected' : '' }}>Física matemática</option>
-                    <option value="Historia" {{ old('area') == 'historia' ? 'selected' : '' }}>Historia</option>
-                    <option value="Inglés" {{ old('area') == 'Ingles' ? 'selected' : '' }}>Ingles</option>
-                    <option value="Información" {{ old('area') == 'informacion' ? 'selected' : '' }}>Información</option>
-                    <option value="Información general" {{ old('area') == 'Informaciongeneral' ? 'selected' : '' }}>Información General</option>
-                    <option value="literatura" {{ old('area') == 'literatura' ? 'selected' : '' }}>Literatura</option>
-                    <option value="lenguas" {{ old('area') == 'lenguas' ? 'selected' : '' }}>Lenguas</option>
-                    <option value="Liderazgo" {{ old('area') == 'Liderazgo' ? 'selected' : '' }}>Liderazgo</option>
-                    <option value="Literatura moderna" {{ old('area') == 'Literaturamoderna' ? 'selected' : '' }}>Literatura moderna</option>
-                    <option value="Literatura antigua" {{ old('area') == 'Literaturaantigua' ? 'selected' : '' }}>Literatura antigua</option>
-                    <option value="Literatura infantil" {{ old('area') == 'Literaturainfantil' ? 'selected' : '' }}>Literatura infantil</option>
-                    <option value="Matemáticas" {{ old('area') == 'Matemáticas' ? 'selected' : '' }}>Matemáticas</option>
-                    <option value="Medio ambiente" {{ old('area') == 'medioambiente' ? 'selected' : '' }}>Medio ambiente</option>
-                    <option value="Psicología" {{ old('area') == 'psicologia' ? 'selected' : '' }}>Psicología</option>
-                    <option value="Política" {{ old('area') == 'politica' ? 'selected' : '' }}>Política</option>
-                    <option value="Química" {{ old('area') == 'Química' ? 'selected' : '' }}>Química</option>
-                    <option value="Religion" {{ old('area') == 'religion' ? 'selected' : '' }}>Religión</option>
-
-                </select>
-                @error('area')
+        </div>
+        <div class="sm:pl-3 pt-7" >
+            <!-- Fecha de publicacion -->
+            <div class="mb-3">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="publication_date">Fecha de publicación</label>
+                <input id="publication_date" name="publication_date" value="{{ old('publication_date') }}" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date">
+                @error('publication_date')
                     <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Incorrecto</span></p>
                 @enderror
             </div>
-
 
             <!-- Estado del libro -->
             <div class="mb-3 col-span-6 sm:col-span-3">
-                <label for="status" class="block text-sm font-bold text-gray-700 mb-2">Estado del libro:</label>
-                <select id="status" name="status" value="{{ old('status') }}" class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300">
-                    <option selected disabled value="">Seleccione su Estado</option>
-                    <option value="well" {{ old('status') == 'well' ? 'selected' : '' }}>Bueno</option>
-                    <option value="regular" {{ old('status') == 'regular' ? 'selected' : '' }}>Regular</option>
-                    <option value="bad" {{ old('status') == 'bad' ? 'selected' : '' }}>Malo</option>
+                <label for="book_status" class="block text-sm font-bold text-gray-700 mb-2">Estado del libro:</label>
+                <select id="book_status" name="book_status" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">Select a classification</option>
+                    @foreach ($book_status as $status)
+                        <option value="{{ $status->id }}" {{ old('book_status') == $status->id ? 'selected' : '' }}>
+                            {{ $status->state}}
+                        </option>
+                    @endforeach
                 </select>
-                @error('status')
+                @error('book_status')
                     <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Incorrecto</span></p>
                 @enderror
             </div>
 
-
+            <!-- Actividad -->
             <div class="mb-3 col-span-6 sm:col-span-3">
                 <label for="activite" class="block text-sm font-bold text-gray-700 mb-2">Actividad:</label>
-                <select id="activite" name="activite" value="{{ old('activite') }}" class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300">
-                    <option selected disabled value="">Seleccione su Actividad</option>
-                    <option value="reference_material" {{ old('activite') == 'reference_material' ? 'selected' : '' }}>Material de referencia</option>
-                    <option value="investigation" {{ old('activite') == 'investigation' ? 'selected' : '' }}>Investigación</option>
-                    <option value="teaching" {{ old('activite') == 'teaching' ? 'selected' : '' }}>Enseñanza</option>
-                    <option value="consultation" {{ old('activite') == 'consultation' ? 'selected' : '' }}>Consulta</option>
-                    <option value="languagues" {{ old('activite') == 'languagues' ? 'selected' : '' }}>Idiomas</option>
-                    <option value="reading" {{ old('activite') == 'reading' ? 'selected' : '' }}>Lectura</option>
+                <select id="activite" name="activite" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">Select a classification</option>
+                    @foreach ($activities as $activite)
+                        <option value="{{ $activite->id }}" {{ old('activite') == $activite->id ? 'selected' : '' }}>
+                            {{ $activite->activity_occupation}}
+                        </option>
+                    @endforeach
                 </select>
                 @error('activite')
                     <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Incorrecto</span></p>
                 @enderror
             </div>
-            <div class="mb-3">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="year">Año del Registro</label>
-                <input type="number" id="year" name="year" value="{{ old('year') }}" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Año de donación" min="2010" max="{{ date('Y') }}">
-                @error('year')
-                    <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Ingrese un año válido</span></p>
+            <!-- Ubicación -->
+            <div class="mb-3 col-span-6 sm:col-span-3">
+                <label for="location" class="block text-sm font-bold text-gray-700 mb-2">Ubicaión:</label>
+                <select id="location" name="location" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">Select a classification</option>
+                    @foreach ($book_location as $location)
+                        <option value="{{ $location->id }}" {{ old('location') == $location->id ? 'selected' : '' }}>
+                            {{ $location->location}}
+                        </option>
+                    @endforeach
+                </select>
+                @error('location')
+                    <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Incorrecto</span></p>
                 @enderror
             </div>
+
             <div class="mb-3 col-span-6 sm:col-span-3">
-                <label for="action" class="block text-sm font-bold text-gray-700 mb-2">Acción:</label>
-                <select id="action" name="action" class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300">
-                    <option selected disabled value="">Seleccione una acción</option>
-                    <option value="donaciones" {{ old('action') == 'donaciones' ? 'selected' : '' }}>Donaciones</option>
-                    <option value="descartaciones" {{ old('action') == 'descartaciones' ? 'selected' : '' }}>Descartes</option>
-                    <option value="inventario" {{ old('action') == 'inventario' ? 'selected' : '' }}>Inventario</option>
+                <label for="donado" class="block text-sm font-bold text-gray-700 mb-2">Donación:</label>
+                <select id="donado" name="donado" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">Select a classification</option>
+                    <option value="1" {{ old('donado') == 1 ? 'selected' : '' }} > Si </option>
+                    <option value="2" {{ old('donado') == 2 ? 'selected' : '' }} > No </option>
                 </select>
-                @error('action')
-                    <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Seleccione una acción válida</span></p>
+                @error('donado')
+                    <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Incorrecto</span></p>
                 @enderror
             </div>
             
-            <div class="">
-                <label class="block text-gray-700 text-sm font-bold" for="image">Imagen del libro</label>
-                <input type="file" id="image" name="image" accept="image/*">
-            </div>
         </div>
         <!-- Botón de envío -->
         <div class="flex items-center w-full">
@@ -249,5 +222,31 @@
             });
         </script>
     @endif
+
+    <script>
+        function buttonMenos() {
+            // Obtener el campo de entrada
+            const amountInput = document.getElementById('amount');
+            // Obtener el valor actual y convertirlo a número
+            let currentValue = parseInt(amountInput.value, 10);
+            // Disminuir el valor en 1
+            if (!isNaN(currentValue) && currentValue > 0) {
+                amountInput.value = currentValue - 1;
+            }
+        }
+
+        function buttonMas() {
+            // Obtener el campo de entrada
+            const amountInput = document.getElementById('amount');
+            // Obtener el valor actual y convertirlo a número
+            let currentValue = parseInt(amountInput.value, 10);
+            // Aumentar el valor en 1
+            if (!isNaN(currentValue)) {
+                amountInput.value = currentValue + 1;
+            } else {
+                amountInput.value = 1; // Si no hay valor, inicializa en 1
+            }
+        }
+    </script>
 
 @endsection

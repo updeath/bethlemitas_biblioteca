@@ -74,7 +74,7 @@
     <div class="container mx-auto my-10">
         <h1 class="text-3xl font-semibold mb-6">Tabla Registros de Inventario</h1>
         <div class="overflow-x-auto">
-            <table class="min-w-full bg-white border border-gray-300 rounded-lg overflow-hidden">
+            <table class="bg-white border border-gray-300 rounded-lg overflow-hidden" style="width: 105%">
                 <thead class="bg-gray-800 text-white">
                     <tr>
                         <th class="py-3 px-4">Clasif PGC</th>
@@ -87,24 +87,26 @@
                         <th class="py-3 px-4">Ubicación</th>
                         <th class="py-3 px-4">Actividad en la que se ocupa</th>
                         <th class="py-3 px-4">Donado</th>
-                        <th class="py-3 px-4">Descartado</th>
+                        <th class="py-3 px-4">Cantidad de desacartes</th>
                         <th class="py-3 px-4">Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="text-align: left; vertical-align: middle;">
                     @foreach ($inventory as $inventories)
                         <!-- Ejemplo de una fila -->
                         <tr class="transition-all hover:bg-gray-100">
-                            <td class="py-3 px-4">{{ $inventories->classification->name_classification}}</td>
-                            <td class="py-3 px-4">{{ $inventories->title }}</td>
-                            <td class="py-3 px-4">{{ $inventories->author->name_author }}</td>
-                            <td class="py-3 px-4">{{ $inventories->amount }}</td>
-                            <td class="py-3 px-4">{{ $inventories->editorial->name_editorial }}</td>
-                            <td class="py-3 px-4">{{ $inventories->publication_date }}</td>
-                            <td class="py-3 px-4">{{ $inventories->estado->state }}</td>
-                            <td class="py-3 px-4">{{ $inventories->ubicacion->location }}</td>
-                            <td class="py-3 px-4">{{ $inventories->actividad->activity_occupation }}</td>
-                            <td class="py-3 px-4">
+                            <td class="py-3 px-4 border-gray-200">{{ $inventories->classification->clasifPGC}}</td>
+                            <td class="py-3 px-4 border-gray-200">{{ $inventories->title }}</td>
+                            <td class="py-3 px-4 border-gray-200">{{ $inventories->author->name_author }}</td>
+                            <td class="py-3 px-4 border-gray-200">{{ $inventories->amount }}</td>
+                            <td class="py-3 px-3 border-gray-200">{{ $inventories->editorial->name_editorial }}</td>
+                            <td class="py-3 px-4 border-gray-200">{{ $inventories->publication_date }}</td>
+                            <td class="py-3 px-4 border-gray-200">{{ $inventories->estado->state }}</td>
+                            <td class="py-3 px-4 border-gray-200">{{ $inventories->ubicacion->location }}</td>
+                            <td class="py-3 px-4 border-gray-200">{{ $inventories->actividad->activity_occupation }}</td>
+                            <td class="py-3 px-4 border-gray-200">@if($inventories->donated == 1) Si @elseif($inventories->donated == 2) No @endif</td>
+                            <td class="py-3 px-4 border-gray-200">@if($inventories->amount_descarted >= 1) {{ $inventories->amount_descarted }} @else Ninguno @endif</td>
+                            <td class="py-3 px-4 border-gray-200">
                                 <a href="{{ route('inventory.edit', ['inventory' => $inventories->id]) }}"
                                     class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold px-2 py-1 rounded-full transition duration-300">
                                     Editar

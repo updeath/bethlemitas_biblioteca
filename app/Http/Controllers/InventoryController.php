@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventory;
 use App\Models\Classification;
+use App\Models\editorial;
+use App\Models\Author;
+use App\Models\Book_statu;
+use App\Models\Activity;
+use App\Models\Book_location;
 use Illuminate\Http\Request;
 use App\Exports\InventoryExport;
 use App\Imports\InventoryImport;
@@ -39,8 +44,13 @@ class InventoryController extends Controller
      */
     public function create()
     {
-        $classifications = Classification::all();
-        return view("home.inventory.create", compact('classifications'));
+        $classifications = Classification::orderBy('clasifPGC')->get();
+        $editorials = editorial::orderBy('name_editorial')->get();
+        $authors = Author::orderBy('name_author')->get();
+        $book_status = Book_statu::all();
+        $activities = Activity::orderBy('activity_occupation')->get();
+        $book_location = Book_location::all();
+        return view("home.inventory.create", compact('classifications', 'editorials', 'authors', 'book_status' , 'activities', 'book_location'));
     }
 
     /**
@@ -49,20 +59,31 @@ class InventoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'code' => 'required|string',
             'clasifpgc' => 'required|integer',
             'title' => 'required|string',
+            'author' => 'required|integer',
             'amount' => 'required|integer',
-            'author' => 'required|string',
-            'editorial' => 'required|string',
-            'status' => 'required|in:well,regular,bad',
-            'activite' => 'required|in:reference_material,investigation,teaching,consultation,languagues,reading',
-            "category" => "required",
-            'area' => 'required|string',
-            "year" => "required|date_format:Y",
-            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
-            "action" => "required|in:donaciones,descartaciones,inventario",
+            'editorial' => 'required|integer',
+            'publication_date' => 'required|date',
+            'book_status' => 'required|integer',
+            'location' => 'required|integer',
+            'activite' => 'required|integer',
+            'donado' => 'required|integer',
         ]);
+
+        $book = new Inventory();
+        $book->id_clasifPGC = $request->input('clasifpgc');
+        $book->title = $request->input('title');
+        $book->id_author = $request->input('author');
+        $book->amount = $request->input('amount');
+        $book->id_editorial = $request->input('editorial');
+        $book->publication_date = $request->input('publication_date');
+        $book->id_status = $request->input('book_status');
+        $book->id_location = $request->input('location');
+        $book->id_activity = $request->input('activite');
+        $book->donated = $request->input('donado');
+
+        $book->save();
 
         // Dependiendo de la acción seleccionada, guardar en la tabla correspondiente
        
@@ -80,7 +101,7 @@ class InventoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit($id) 
     {
         // Obtener el inventario por su ID
         $inventory = Inventory::findOrFail($id);

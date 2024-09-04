@@ -178,7 +178,7 @@
                   </div>
                </div>
            </aside>
-           <div id="main-content" class="bg-[#D5DBDB] relative overflow-y-auto lg:ml-64" style="width:80%; position:absolute; top:5rem">
+           <div id="main-content" class="bg-[#D5DBDB] relative overflow-y-auto lg:ml-64" style="width:85%; position:absolute; top:5rem">
                <main>
                   <div class=" px-9 my-3 max-w-full" >
                      @yield('content')

@@ -28,8 +28,8 @@ return new class extends Migration
             $table->foreign('id_location')->references('id')->on('book_locations');
             $table->unsignedBigInteger('id_activity');
             $table->foreign('id_activity')->references('id')->on('activities');
-            $table->boolean('donated');
-            $table->boolean('descarted');
+            $table->integer('donated');
+            $table->integer('amount_    descarted');
             $table->timestamps();
         });
     }
