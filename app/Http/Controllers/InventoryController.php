@@ -105,9 +105,15 @@ class InventoryController extends Controller
     {
         // Obtener el inventario por su ID
         $inventory = Inventory::findOrFail($id);
+        $classifications = Classification::orderBy('clasifPGC')->get();
+        $editorials = editorial::orderBy('name_editorial')->get();
+        $authors = Author::orderBy('name_author')->get();
+        $book_status = Book_statu::all();
+        $activities = Activity::orderBy('activity_occupation')->get();
+        $book_location = Book_location::all();
 
         // Retornar la vista de edición con el inventario
-        return view('home.inventory.edit', compact('inventory'));
+        return view('home.inventory.edit', compact('inventory', 'classifications', 'editorials', 'authors', 'book_status' , 'activities', 'book_location'));
     }
     /**
      * Update the specified resource in storage.
