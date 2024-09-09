@@ -50,7 +50,7 @@ Route::group(['middleware' => PreventBackHistoryMiddleware::class], function () 
     Route::get('/index_inventory', [InventoryController::class, 'index'])->name('inventory.index');
     Route::get('inventories/{inventory}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
     Route::put('inventories/{inventory}', [InventoryController::class, 'update'])->name('inventory.update');
-    Route::delete('inventory/{invenotry}', [InventoryController::class, 'destroy'])->name('inventory.destroy');
+    Route::post('inventory/{bookId}/descarted', [InventoryController::class, 'descarted'])->name('inventory.descarted');
     Route::get('/export-inventory', [InventoryController::class, 'exportInventario'])->name('export.inventory');
     Route::post('/import-inventory', [InventoryController::class, 'importInventario'])->name('import.inventory');
 });

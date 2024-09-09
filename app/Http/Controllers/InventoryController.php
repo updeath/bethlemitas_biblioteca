@@ -14,6 +14,7 @@ use App\Exports\InventoryExport;
 use App\Imports\InventoryImport;
 use Maatwebsite\Excel\Facades\Excel;
 // use App\Imports\InventoryImport;
+use Illuminate\Support\Facades\Log;
 
 class InventoryController extends Controller
 {
@@ -23,7 +24,7 @@ class InventoryController extends Controller
     public function index(Request $request)
     {
         
-        $query = Inventory::query();
+        $query = Inventory::where('amount', '>', 0);
 
         if ($request->has('search')) {
             $searchTerm = $request->input('search');
@@ -62,7 +63,7 @@ class InventoryController extends Controller
             'clasifpgc' => 'required|integer',
             'title' => 'required|string',
             'author' => 'required|integer',
-            'amount' => 'required|integer',
+            'amount' => 'required|integer|min:1',
             'editorial' => 'required|integer',
             'publication_date' => 'required|date',
             'book_status' => 'required|integer',
@@ -120,35 +121,80 @@ class InventoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $book = Inventory::find($id);
+
         $request->validate([
-            'code' => 'required|string',
             'clasifpgc' => 'required|integer',
             'title' => 'required|string',
-            'amount' => 'required|integer',
-            'author' => 'required|string',
-            'editorial' => 'required|string',
-            'status' => 'required|in:well,regular,bad',
-            'activite' => 'required|in:reference_material,investigation,teaching,consultation,languagues,reading',
-            'area' => 'required|string',
-            "year" => "required|date_format:Y",
-            
+            'author' => 'required|integer',
+            'amount' => 'required|integer|min:1',
+            'editorial' => 'required|integer',
+            'publication_date' => 'required|date',
+            'book_status' => 'required|integer',
+            'location' => 'required|integer',
+            'activite' => 'required|integer',
+            'donado' => 'required|integer',
         ]);
 
-        $inventory = Inventory::findOrFail($id);
+        $book->id_clasifPGC = $request->clasifpgc;
+        $book->title = $request->title;
+        $book->id_author = $request->author;
+        $book->amount = $request->amount;
+        $book->id_editorial = $request->editorial;
+        $book->publication_date = $request->publication_date;
+        $book->id_status = $request->book_status;
+        $book->id_location = $request->location;
+        $book->id_activity = $request->activite;
+        $book->donated = $request->donado;
 
-        $inventory->update($request->all());
-
-        return redirect()->back()->with('success', 'Libro actualizado exitosamente.');
+        // Si los datos son diferentes se actualiza
+        if ($book->isDirty()) {
+            $book->update();
+            return redirect()->back()->with('success', 'Libro actualizado correctamente.');
+        } else {
+            return redirect()->back()->with('info', 'No se realizó ninguna actualización.');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Inventory $Inventory)
+    public function descarted(Request $request, $bookId)
     {
-        $Inventory->delete();
+        // // Registrar el valor de $userId para depuración
+        // Log::info('Valor de $userId: ' . $bookId);
+        // // Mostrar temporalmente el valor de $userId en la interfaz de usuario
+        // return response()->json(['userId' => $bookId]);
 
-        return redirect()->back()->with('delete', 'Eliminado exitosamente');
+        $book = Inventory::find($bookId);
+
+        $request->validate([
+            'amount_descarted' => 'required|integer',
+        ]);
+
+        $cantBook = $book->amount;
+        $BookDescarted = $request->amount_descarted;
+        $cantBookDescarted = $book->amount_descarted;
+        if ($cantBookDescarted == null) {
+            $cantBookDescarted = 0;
+        } else {
+            $cantBookDescarted = $book->amount_descarted;
+        };
+        $newCantBook = $cantBook - $BookDescarted;
+
+        $book->amount = $newCantBook;
+        $book->amount_descarted = $BookDescarted + $cantBookDescarted;
+
+         // Si los datos son diferentes se actualiza
+        if(empty($BookDescarted)){
+            return redirect()->back()->with('info', 'No se descartó ningún libro.');
+        }
+        elseif ($book->isDirty()) {
+            $book->update();
+            return redirect()->back()->with('success', 'Libro descartado correctamente.');
+        } 
+        
+
     }
     public function exportInventario()
     {

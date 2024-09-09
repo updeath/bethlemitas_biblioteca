@@ -34,14 +34,20 @@
 </style>
 
 @section('content')
+<button type="button" onclick="window.location.href='{{ route('inventory.index') }}'" style="background: #f1f5e9; border: none; cursor: pointer;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19 12H7.83l5.59-5.59L12 5l-7 7 7 7 1.41-1.41L7.83 13H19v-1z"/>
+    </svg>
+</button>
 <div class="bg-white shadow-md rounded-lg px-8 my-8 flex w-[120vh] items-center" style="width: 90%" >
     <!-- Formulario en dos columnas -->
+    
     <form class="grid grid-cols-1 md:grid-cols-2 gap-4" action="{{ route('inventory.update', ['inventory' => $inventory->id]) }}" method="POST" style="width: 100%; padding: 3rem 5rem 3rem 5rem">
         @method('PUT')
         @csrf
         <!-- Columna 1 -->
         <div >
-            <h1 class="text-2xl font-bold "><em>Crear Registro</em></h1>
+            <h1 class="text-2xl font-bold "><em>Editar Libro</em></h1>
 
             <div class="mb-3">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="clasifpgc">CLASIF PGC</label>
@@ -219,6 +225,26 @@
             Toast.fire({
                 icon: 'success',
                 title: '{{ session('success') }}',
+            });
+        </script>
+    @endif
+
+    @if (session('info'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                iconColor: 'white',
+                customClass: {
+                    popup: 'colored-toast',
+                },
+                showConfirmButton: false,
+                timer: 2500,
+                timerProgressBar: true,
+            });
+            Toast.fire({
+                icon: 'info',
+                title: '{{ session('info') }}',
             });
         </script>
     @endif
