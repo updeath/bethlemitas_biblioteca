@@ -53,4 +53,7 @@ Route::group(['middleware' => PreventBackHistoryMiddleware::class], function () 
     Route::post('inventory/{bookId}/descarted', [InventoryController::class, 'descarted'])->name('inventory.descarted');
     Route::get('/export-inventory', [InventoryController::class, 'exportInventario'])->name('export.inventory');
     Route::post('/import-inventory', [InventoryController::class, 'importInventario'])->name('import.inventory');
+
+    // Libros descartados
+    Route::get('/listing_discards', [InventoryController::class, 'listing_discards'])->name('listing.discards');
 });

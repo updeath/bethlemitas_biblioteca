@@ -10,6 +10,7 @@ class Inventory extends Model
     use HasFactory;
 
     protected $fillable = [
+        'ISBN',
         'id_clsifPGC',
         'title',
         'id_author',
@@ -19,8 +20,8 @@ class Inventory extends Model
         'id_status',
         'id_location',
         'id_activity',
-        'donated',
-        'descarted',
+        'amount_donated',
+        'amount_descarted',
     ];
 
     // Relación con la tabla classification

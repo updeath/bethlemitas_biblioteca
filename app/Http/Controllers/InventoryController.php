@@ -39,6 +39,24 @@ class InventoryController extends Controller
         return view("home.inventory.index", compact("inventory"));
     }
 
+    public function listing_discards(Request $request)
+    {
+        
+        $query = Inventory::where('amount_descarted', '>', 0);
+
+        if ($request->has('search')) {
+            $searchTerm = $request->input('search');
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('title', 'LIKE', '%' . $searchTerm . '%')
+                    ->orWhere('author', 'LIKE', '%' . $searchTerm . '%');
+            });
+        }
+
+        $inventory = $query->paginate(50);
+
+        return view("home.roleOut.index", compact("inventory"));
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -60,6 +78,7 @@ class InventoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'isbn' => 'required|string',
             'clasifpgc' => 'required|integer',
             'title' => 'required|string',
             'author' => 'required|integer',
@@ -69,10 +88,11 @@ class InventoryController extends Controller
             'book_status' => 'required|integer',
             'location' => 'required|integer',
             'activite' => 'required|integer',
-            'donado' => 'required|integer',
+            'donado' => 'nullable|integer',
         ]);
 
         $book = new Inventory();
+        $book->ISBN = $request->input('isbn');
         $book->id_clasifPGC = $request->input('clasifpgc');
         $book->title = $request->input('title');
         $book->id_author = $request->input('author');
@@ -82,14 +102,14 @@ class InventoryController extends Controller
         $book->id_status = $request->input('book_status');
         $book->id_location = $request->input('location');
         $book->id_activity = $request->input('activite');
-        $book->donated = $request->input('donado');
+        if ($request->input('donado') > $request->input('amount')){
+            return redirect()->back()->with('error', 'La cantidad de libro donados superas a la cantidad total de libros.');
+        } else {
+            $book->amount_donated = $request->input('donado');
+            $book->save();
 
-        $book->save();
-
-        // Dependiendo de la acción seleccionada, guardar en la tabla correspondiente
-       
-
-        return redirect()->back()->with('success', 'Registro agregado exitosamente.');
+            return redirect()->back()->with('success', 'Registro agregado exitosamente.');
+        }
     }
     /**
      * Display the specified resource.
@@ -124,6 +144,7 @@ class InventoryController extends Controller
         $book = Inventory::find($id);
 
         $request->validate([
+            'isbn' => 'required|string',
             'clasifpgc' => 'required|integer',
             'title' => 'required|string',
             'author' => 'required|integer',
@@ -133,9 +154,10 @@ class InventoryController extends Controller
             'book_status' => 'required|integer',
             'location' => 'required|integer',
             'activite' => 'required|integer',
-            'donado' => 'required|integer',
+            'donado' => 'nullable|integer',
         ]);
 
+        $book->ISBN = $request->isbn;
         $book->id_clasifPGC = $request->clasifpgc;
         $book->title = $request->title;
         $book->id_author = $request->author;
@@ -145,15 +167,21 @@ class InventoryController extends Controller
         $book->id_status = $request->book_status;
         $book->id_location = $request->location;
         $book->id_activity = $request->activite;
-        $book->donated = $request->donado;
-
-        // Si los datos son diferentes se actualiza
-        if ($book->isDirty()) {
-            $book->update();
-            return redirect()->back()->with('success', 'Libro actualizado correctamente.');
-        } else {
-            return redirect()->back()->with('info', 'No se realizó ninguna actualización.');
+        if ($request->input('amount') < $request->input('donado')) {
+            return redirect()->back()->with('error', 'La cantidad de libro donados superas a la cantidad total de libros.');
+        }else {
+            $book->amount_donated = $request->donado;
+                    // Si los datos son diferentes se actualiza
+            if ($book->isDirty()) {
+                $book->update();
+                return redirect()->back()->with('success', 'Libro actualizado correctamente.');
+            } else {
+                return redirect()->back()->with('info', 'No se realizó ninguna actualización.');
+            }
         }
+        
+
+
     }
 
     /**

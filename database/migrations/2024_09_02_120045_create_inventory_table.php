@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
+            $table->string('ISBN');
             $table->unsignedBigInteger('id_clasifPGC');
             $table->foreign('id_clasifPGC')->references('id')->on('classifications');
             $table->string('title')->unique();
@@ -28,8 +29,8 @@ return new class extends Migration
             $table->foreign('id_location')->references('id')->on('book_locations');
             $table->unsignedBigInteger('id_activity');
             $table->foreign('id_activity')->references('id')->on('activities');
-            $table->integer('donated');
-            $table->integer('amount_    descarted');
+            $table->integer('amount_donated');
+            $table->integer('amount_descarted');
             $table->timestamps();
         });
     }
