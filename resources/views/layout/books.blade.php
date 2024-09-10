@@ -55,19 +55,40 @@
                 <br>
                 <label for="data-amount" class="text-sm font-medium text-gray-500" >Cantidad de ejemplares:</label>
                 <input type="number" id="data-amount" value="" style="border: none; width: 30px; text-align: center" disabled>
+
+                <label for="data-amount-donated" class="text-sm font-medium text-gray-500" >Cantidad libros donados:</label>
+                <input type="number" id="data-amount-donated" value="" style="border: none; width: 30px; text-align: center" disabled>
                 
-                <label for="data-amount" class="block text-sm font-medium text-gray-500" style="padding-top: 10px;">Cantidad a descartar:</label>
-                <button type="button" onclick="buttonMenos()" style="background: #f1f5e9; border: none; cursor: pointer;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 13H5v-2h14v2z"></path>
-                    </svg>
-                </button>
-                <input type="number" id="amount_descarted" name="amount_descarted" style="border: 0.5px solid #c0c1c9; width: 50px; text-align: center" min="0" value="0">
-                <button type="button" onclick="buttonMas()" style="background: #f1f5e9; border: none; cursor: pointer;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path>
-                    </svg>
-                </button>
+                <div style="display: flex">
+                    <div style="margin-right: 57px">
+                        <label for="data-amount" class="block text-sm font-medium text-gray-500" style="padding-top: 10px;">Cantidad a descartar:</label>
+                        <button type="button" onclick="buttonMenos()" style="background: #f1f5e9; border: none; cursor: pointer;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 13H5v-2h14v2z"></path>
+                            </svg>
+                        </button>
+                        <input type="number" id="amount_descarted" name="amount_descarted" style="border: 0.5px solid #c0c1c9; width: 50px; text-align: center" min="0" value="0">
+                        <button type="button" onclick="buttonMas()" style="background: #f1f5e9; border: none; cursor: pointer;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div>
+                        <label for="data-amount" class="block text-sm font-medium text-gray-500" style="padding-top: 10px;">Cantidad a descartar:</label>
+                        <button type="button" onclick="buttonMenosDonated()" style="background: #f1f5e9; border: none; cursor: pointer;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 13H5v-2h14v2z"></path>
+                            </svg>
+                        </button>
+                        <input type="number" id="amount_donated" name="amount_donated" style="border: 0.5px solid #c0c1c9; width: 50px; text-align: center" min="0" value="0">
+                        <button type="button" onclick="buttonMasDonated()" style="background: #f1f5e9; border: none; cursor: pointer;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
 
                 <div class="flex justify-end mt-4">
                 <button id="cancel-button" type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg mr-2">Cancelar</button>
@@ -91,6 +112,7 @@
             const bookTitle = document.getElementById('book-title');
             const confirmDeleteButton = document.getElementById('confirm-delete-button');
             const amount_descarted = document.getElementById('amount_descarted');
+            const amount_book_donated = document.getElementById('amount_donated');
             let selectedForm = null;
     
             deleteButtons.forEach(button => {
@@ -98,8 +120,13 @@
                     // Obtener el título del libro y el formulario correspondiente
                     const title = this.getAttribute('data-title');
                     const amount = this.getAttribute('data-amount');
+                    let amount_donated = this.getAttribute('data-amount-donated');
                     const id = this.getAttribute('data-id');
-                    amount_descarted.max = amount;
+                    amount_descarted.max = amount - amount_donated;
+                    if (amount_donated === null || isNaN(amount_donated) || amount_donated === '') {
+                        amount_donated = 0;
+                    }
+                    amount_book_donated.max = amount_donated;
 
                     //Actualizar el valor bookId en el formulario
                     document.getElementById('bookId').value = id;
@@ -110,6 +137,11 @@
 
                     //Actualizar el valor de la cantidad total
                     document.getElementById('data-amount').value = amount;
+                    if (amount_donated === null || isNaN(amount_donated) || amount_donated === '')  {
+                        amount_donated = 0;
+                    }
+                    
+                    document.getElementById('data-amount-donated').value = amount_donated;
                     
                     // Mostrar el título en el modal
                     bookTitle.textContent = title;
@@ -122,6 +154,7 @@
             // Cerrar el modal al hacer clic en cancelar
             document.getElementById('cancel-button').addEventListener('click', function () {
                 document.getElementById('amount_descarted').value = 0;
+                document.getElementById('amount_donated').value = 0;
                 modal.classList.add('hidden');
             });
 
@@ -206,6 +239,36 @@
             // Obtener el campo de entrada
             const amountInput = document.getElementById('amount_descarted');
             const maxAmount = parseInt(document.getElementById('data-amount').value, 10);
+            const maxAmountDonated = parseInt(document.getElementById('data-amount-donated').value, 10);
+            let = maxAmountTotal = maxAmount - maxAmountDonated;
+            
+            // Obtener el valor actual y convertirlo a número
+            let currentValue = parseInt(amountInput.value, 10);
+            // Obtener el valor máximo de 'data-amount' del botón de descarte (suponiendo que lo almacenas en el botón)
+            // Aumentar el valor en 1
+            if (!isNaN(currentValue) &&  currentValue < maxAmountTotal) {
+                amountInput.value = currentValue + 1;
+            } else {
+                amountInput.value = 1; // Si no hay valor, inicializa en 1
+            }
+        }
+        //Botones de descarte de libros donados
+        function buttonMenosDonated() {
+            // Obtener el campo de entrada
+            const amountInput = document.getElementById('amount_donated');
+            // Obtener el valor actual y convertirlo a número
+            let currentValue = parseInt(amountInput.value, 10);
+            // Disminuir el valor en 1
+            if (!isNaN(currentValue) && currentValue > 0) {
+                amountInput.value = currentValue - 1;
+            }
+            
+        }
+
+        function buttonMasDonated() {
+            // Obtener el campo de entrada
+            const amountInput = document.getElementById('amount_donated');
+            const maxAmount = parseInt(document.getElementById('data-amount-donated').value, 10);
             
             // Obtener el valor actual y convertirlo a número
             let currentValue = parseInt(amountInput.value, 10);
@@ -214,7 +277,7 @@
             if (!isNaN(currentValue) &&  currentValue < maxAmount) {
                 amountInput.value = currentValue + 1;
             } else {
-                amountInput.value = 1; // Si no hay valor, inicializa en 1
+                amountInput.value = 0; // Si no hay valor, inicializa en 1
             }
         }
     </script>

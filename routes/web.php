@@ -56,4 +56,6 @@ Route::group(['middleware' => PreventBackHistoryMiddleware::class], function () 
 
     // Libros descartados
     Route::get('/listing_discards', [InventoryController::class, 'listing_discards'])->name('listing.discards');
+    // Libros donados
+    Route::get('/listing_donated', [InventoryController::class, 'listing_donated'])->name('listing.donated');
 });

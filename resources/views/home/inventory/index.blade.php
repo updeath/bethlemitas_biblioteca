@@ -80,6 +80,7 @@
                             <button type="button" class="inline-block bg-red-500 hover:bg-red-600 rounded-full px-2 py-1 font-semibold text-white mr-1 mb-1 descarte_book" 
                                 data-id="{{ $inventories->id }}" 
                                 data-amount="{{ $inventories->amount }}"
+                                data-amount-donated="{{ $inventories->amount_donated }}"
                                 data-title="{{ $inventories->title }}">
                                 Descartar
                             </button>

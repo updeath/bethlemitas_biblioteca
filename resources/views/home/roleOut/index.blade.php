@@ -1,7 +1,7 @@
 @extends ('layout.books')
 
 @section('import-excel')
-    <form action="{{ route('inventory.index') }}" method="GET" class="flex items-center mt-5">
+    <form action="{{ route('listing.discards') }}" method="GET" class="flex items-center mt-5">
         <input type="search" name="search" class="bg-purple-white shadow rounded-l border-0 p-2"
             placeholder="Buscar">
         <button type="submit"
@@ -24,6 +24,7 @@
         <table class="bg-white border border-gray-300 rounded-lg overflow-hidden" style="width: 105%">
             <thead class="bg-gray-800 text-white">
                 <tr>
+                    <th class="py-3 px-4">ISBN</th>
                     <th class="py-3 px-4">Clasif PGC</th>
                     <th class="py-3 px-4">Título</th>
                     <th class="py-3 px-4">Autor</th>
@@ -39,6 +40,7 @@
                 @foreach ($inventory as $inventories)
                     <!-- Ejemplo de una fila -->
                     <tr class="transition-all hover:bg-gray-100">
+                        <td class="py-3 px-4 border-gray-200" style="text-align: center">{{ $inventories->ISBN}}</td>
                         <td class="py-3 px-4 border-gray-200" style="text-align: center">{{ $inventories->classification->clasifPGC}}</td>
                         <td class="py-3 px-4 border-gray-200" style="text-align: center">{{ $inventories->title }}</td>
                         <td class="py-3 px-4 border-gray-200" style="text-align: center">{{ $inventories->author->name_author }}</td>

@@ -23,38 +23,56 @@ class InventoryController extends Controller
      */
     public function index(Request $request)
     {
-        
         $query = Inventory::where('amount', '>', 0);
 
         if ($request->has('search')) {
             $searchTerm = $request->input('search');
-            $query->where(function ($q) use ($searchTerm) {
-                $q->where('title', 'LIKE', '%' . $searchTerm . '%')
-                    ->orWhere('author', 'LIKE', '%' . $searchTerm . '%');
+            $query->join('authors', 'inventories.id_author', '=' , 'authors.id')
+                    ->where(function ($q) use ($searchTerm) {
+                        $q->where('inventories.title', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('authors.name_author', 'LIKE', '%' . $searchTerm . '%');
             });
         }
 
-        $inventory = $query->paginate(50);
+        $inventory = $query->orderBy('title', 'asc')->paginate(50);
 
         return view("home.inventory.index", compact("inventory"));
     }
 
     public function listing_discards(Request $request)
-    {
-        
+    { 
         $query = Inventory::where('amount_descarted', '>', 0);
 
         if ($request->has('search')) {
             $searchTerm = $request->input('search');
-            $query->where(function ($q) use ($searchTerm) {
-                $q->where('title', 'LIKE', '%' . $searchTerm . '%')
-                    ->orWhere('author', 'LIKE', '%' . $searchTerm . '%');
+            $query->join('authors', 'inventories.id_author', '=' , 'authors.id')
+                    ->where(function ($q) use ($searchTerm) {
+                        $q->where('inventories.title', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('authors.name_author', 'LIKE', '%' . $searchTerm . '%');
             });
         }
 
-        $inventory = $query->paginate(50);
+        $inventory = $query->orderBy('title', 'asc')->paginate(50);
 
         return view("home.roleOut.index", compact("inventory"));
+    }
+
+    public function listing_donated(Request $request)
+    {
+        $query = Inventory::where('amount_donated', '>', 0);
+
+        if ($request->has('search')) {
+            $searchTerm = $request->input('search');
+            $query->join('authors', 'inventories.id_author', '=' , 'authors.id')
+                    ->where(function ($q) use ($searchTerm) {
+                        $q->where('inventories.title', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('authors.name_author', 'LIKE', '%' . $searchTerm . '%');
+            });
+        }
+
+        $inventory = $query->orderBy('title', 'asc')->paginate(50);
+
+        return view("home.donations.listing", compact("inventory"));
     }
 
 
@@ -197,24 +215,30 @@ class InventoryController extends Controller
         $book = Inventory::find($bookId);
 
         $request->validate([
-            'amount_descarted' => 'required|integer',
+            'amount_descarted' => 'nullable|integer',
+            'amount_donated' => 'nullable|integer',
         ]);
 
-        $cantBook = $book->amount;
-        $BookDescarted = $request->amount_descarted;
-        $cantBookDescarted = $book->amount_descarted;
-        if ($cantBookDescarted == null) {
+        $cantBook = $book->amount; //cantidad actual del total de libros
+        $cantDonated = $book->amount_donated; //cantidad actual de libros donados
+        $cantBookDescarted = $book->amount_descarted; //Cantidad actual de libros descartados
+
+        $BookDescarted = $request->amount_descarted; //Se guarda el valor de libros no donados a desacartar
+        $BookDonatedDescarted = $request->amount_donated; //Se guarda el valor de libros donados a desacartar
+        if ($cantBookDescarted == null) { //Si el valor de la cantidad actual de libros descartados es null entonces ese valor pasa a ser 0
             $cantBookDescarted = 0;
         } else {
-            $cantBookDescarted = $book->amount_descarted;
+            $cantBookDescarted = $book->amount_descarted; //Sino simplemente toma el valor que hay
         };
-        $newCantBook = $cantBook - $BookDescarted;
+        $newCantBook = $cantBook - ($BookDescarted + $BookDonatedDescarted); //La nueva cantidad es la resta de la cantidad total menos la cantidad de libros a descartar.
+        $newCantBookDonated = $cantDonated - $BookDonatedDescarted;
 
-        $book->amount = $newCantBook;
-        $book->amount_descarted = $BookDescarted + $cantBookDescarted;
+        $book->amount = $newCantBook; //se guarda la nueva cantidad
+        $book->amount_descarted = $BookDescarted + $cantBookDescarted + $BookDonatedDescarted; //la nueva cantidad de libros descartados es la cantidad actual mas la nueva cantidad que se esta desacrtando
+        $book->amount_donated = $newCantBookDonated;
 
          // Si los datos son diferentes se actualiza
-        if(empty($BookDescarted)){
+        if(empty($BookDescarted) && empty($BookDonatedDescarted)){
             return redirect()->back()->with('info', 'No se descartó ningún libro.');
         }
         elseif ($book->isDirty()) {
