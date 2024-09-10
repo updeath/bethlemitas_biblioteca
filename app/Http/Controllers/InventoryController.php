@@ -18,9 +18,8 @@ use Illuminate\Support\Facades\Log;
 
 class InventoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    //Controlador para mostrar la vista del inventario
     public function index(Request $request)
     {
         $query = Inventory::where('amount', '>', 0);
@@ -39,6 +38,7 @@ class InventoryController extends Controller
         return view("home.inventory.index", compact("inventory"));
     }
 
+    //Controlador para mostrar la vista de los libros descartados
     public function listing_discards(Request $request)
     { 
         $query = Inventory::where('amount_descarted', '>', 0);
@@ -57,6 +57,7 @@ class InventoryController extends Controller
         return view("home.roleOut.index", compact("inventory"));
     }
 
+    //Controlador para mostrar la vista de los libros donados
     public function listing_donated(Request $request)
     {
         $query = Inventory::where('amount_donated', '>', 0);
@@ -74,11 +75,8 @@ class InventoryController extends Controller
 
         return view("home.donations.listing", compact("inventory"));
     }
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
+     
+    //Controlador para mostrar la vista de crear nuevo registro
     public function create()
     {
         $classifications = Classification::orderBy('clasifPGC')->get();
@@ -90,9 +88,7 @@ class InventoryController extends Controller
         return view("home.inventory.create", compact('classifications', 'editorials', 'authors', 'book_status' , 'activities', 'book_location'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    //Controlador para crear nuevo registro
     public function store(Request $request)
     {
         $request->validate([
@@ -129,17 +125,8 @@ class InventoryController extends Controller
             return redirect()->back()->with('success', 'Registro agregado exitosamente.');
         }
     }
-    /**
-     * Display the specified resource.
-     */
-    public function show(Inventory $Inventory)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    //Controlador para mostrar la vista de editar libro
     public function edit($id) 
     {
         // Obtener el inventario por su ID
@@ -154,9 +141,8 @@ class InventoryController extends Controller
         // Retornar la vista de edición con el inventario
         return view('home.inventory.edit', compact('inventory', 'classifications', 'editorials', 'authors', 'book_status' , 'activities', 'book_location'));
     }
-    /**
-     * Update the specified resource in storage.
-     */
+    
+    //Controlador editar libro
     public function update(Request $request, $id)
     {
         $book = Inventory::find($id);
@@ -202,9 +188,7 @@ class InventoryController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    //Controlador para descartar libros
     public function descarted(Request $request, $bookId)
     {
         // // Registrar el valor de $userId para depuración
@@ -248,6 +232,8 @@ class InventoryController extends Controller
         
 
     }
+
+    //Controlador para exportar
     public function exportInventario()
     {
         $fileName = 'Inventario.xlsx';
@@ -256,6 +242,7 @@ class InventoryController extends Controller
         return response()->download(storage_path('app/' . $fileName));
     }
 
+    //Controlador para importar
     public function importInventario(Request $request)
     {
         $request->validate([
@@ -271,17 +258,4 @@ class InventoryController extends Controller
         }
     }
     
-
-    public function inventory_restore($id)
-    {
-        $donation = Inventory::findOrFail($id);
-
-       
-
-        // Eliminar el libro de la lista de donaciones
-        $donation->delete();
-
-        return redirect()->back()->with('success', 'Libro descartado exitosamente.');
-    }
-
 }

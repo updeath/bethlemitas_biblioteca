@@ -6,56 +6,49 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\DiscardedBookController;
 use App\Http\Controllers\InventoryController;
-use App\Http\Middleware\PreventBackHistoryMiddleware as PreventBackHistoryMiddleware;
+use App\Http\Middleware\PreventBackHistoryMiddleware;
 
-
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
+// Rutas para la autenticación
 Route::prefix('/')->group(function () {
-    // Rutas para el login
-    Route::get('/' , [AuthController::class, 'login'])->name('login');
-    Route::post('/' , [AuthController::class, 'authenticate'])->name('authenticate');
-    Route::get('/logout' , [AuthController::class, 'logout'])->name('logout');
-
+    Route::get('/', [AuthController::class, 'login'])->name('login');
+    Route::post('/', [AuthController::class, 'authenticate'])->name('authenticate');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-
-Route::group(['middleware' => PreventBackHistoryMiddleware::class], function () {
+// Grupo de rutas con middleware para prevenir el historial de retroceso
+Route::middleware([PreventBackHistoryMiddleware::class])->group(function () {
+    // Rutas protegidas por autenticación
     Route::middleware('auth')->group(function () {
+        // Ruta al dashboard principal
         Route::get('/dashboard', function () {
             return view('layout.homePage');
         })->name('dashboard');
+
+        // Ruta a otro dashboard
+        Route::get('/dashboard2', [UserController::class, 'layout'])->name('home');
+
+        // Rutas relacionadas con el perfil del usuario
+        Route::prefix('profile')->group(function () {
+            Route::get('/index', [UserController::class, 'index_profile'])->name('profileEdit');
+            Route::put('/update', [UserController::class, 'profile_update'])->name('user.profileUpdate');
+        });
+
+        // Rutas relacionadas con el inventario de libros
+        Route::prefix('inventory')->group(function () {
+            Route::get('/create', [InventoryController::class, 'create'])->name('inventory.create');
+            Route::post('/store', [InventoryController::class, 'store'])->name('inventory.store');
+            Route::get('/index', [InventoryController::class, 'index'])->name('inventory.index');
+            Route::get('/{inventory}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
+            Route::put('/{inventory}', [InventoryController::class, 'update'])->name('inventory.update');
+            Route::post('/{bookId}/descarted', [InventoryController::class, 'descarted'])->name('inventory.descarted');
+            Route::get('/export', [InventoryController::class, 'exportInventario'])->name('export.inventory');
+            Route::post('/import', [InventoryController::class, 'importInventario'])->name('import.inventory');
+        });
+
+        // Rutas relacionadas con libros descartados
+        Route::get('/listing_discards', [InventoryController::class, 'listing_discards'])->name('listing.discards');
+
+        // Rutas relacionadas con libros donados
+        Route::get('/listing_donated', [InventoryController::class, 'listing_donated'])->name('listing.donated');
     });
-
-
-    Route::get('/dashboard2' , [UserController::class, 'layout'])->name('home');
-
-    //user
-    Route::get('/profile_Index', [UserController::class,'index_profile'])->name('profileEdit');
-    Route::put('/update_profile', [UserController::class,'profile_update'])->name('user.profileUpdate');
-
-    // Inventario libros
-    Route::get('inventory_create', [InventoryController::class, 'create'])->name('inventory.create');
-    Route::post('/inventory_store', [InventoryController::class, 'store'])->name('inventory.store');
-    Route::get('/index_inventory', [InventoryController::class, 'index'])->name('inventory.index');
-    Route::get('inventories/{inventory}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
-    Route::put('inventories/{inventory}', [InventoryController::class, 'update'])->name('inventory.update');
-    Route::post('inventory/{bookId}/descarted', [InventoryController::class, 'descarted'])->name('inventory.descarted');
-    Route::get('/export-inventory', [InventoryController::class, 'exportInventario'])->name('export.inventory');
-    Route::post('/import-inventory', [InventoryController::class, 'importInventario'])->name('import.inventory');
-
-    // Libros descartados
-    Route::get('/listing_discards', [InventoryController::class, 'listing_discards'])->name('listing.discards');
-    // Libros donados
-    Route::get('/listing_donated', [InventoryController::class, 'listing_donated'])->name('listing.donated');
 });

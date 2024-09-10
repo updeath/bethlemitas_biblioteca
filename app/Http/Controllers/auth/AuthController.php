@@ -15,7 +15,13 @@ class AuthController extends Controller
     }
 
     public function logout() {
-        return view('auth.login');
+        Auth::logout();
+        Session::flush();
+        // Regenerar la sesión para prevenir el uso de la sesión antigua
+        Session::regenerate(true);
+
+        // Redirigir al login
+        return redirect()->route('login');; // Puedes redirigir a la ruta de login
     
     }
 
