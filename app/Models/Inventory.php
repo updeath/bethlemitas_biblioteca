@@ -18,6 +18,7 @@ class Inventory extends Model
         'id_editorial',
         'publication_date',
         'id_status',
+        'id_discard_reason',
         'id_location',
         'id_activity',
         'amount_donated',
@@ -46,6 +47,11 @@ class Inventory extends Model
     public function estado()
     {
         return $this->belongsTo(Book_statu::class, 'id_status');
+    }
+
+    public function estado_descarte()
+    {
+        return $this->belongsTo(Book_statu::class, 'id_discard_reason');
     }
 
     // Relación con la tabla ubicacion

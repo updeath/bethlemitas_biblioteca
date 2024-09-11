@@ -25,12 +25,14 @@ return new class extends Migration
             $table->date('publication_date');
             $table->unsignedBigInteger('id_status');
             $table->foreign('id_status')->references('id')->on('book_status');
+            $table->unsignedBigInteger('id_discard_reason')->nullable();
+            $table->foreign('id_discard_reason')->references('id')->on('book_status');
             $table->unsignedBigInteger('id_location');
             $table->foreign('id_location')->references('id')->on('book_locations');
             $table->unsignedBigInteger('id_activity');
             $table->foreign('id_activity')->references('id')->on('activities');
-            $table->integer('amount_donated');
-            $table->integer('amount_descarted');
+            $table->tinyInteger('amount_donated')->nullable();
+            $table->tinyInteger('amount_descarted')->nullable();
             $table->timestamps();
         });
     }

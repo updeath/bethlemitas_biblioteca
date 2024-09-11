@@ -22,7 +22,7 @@ class book_statusSeed extends Seeder
         $statu2->save();
 
         $statu3 = new Book_statu();
-        $statu3->state = 'Malo';
+        $statu3->state = 'Malo u obsoleto';
         $statu3->save();
     }
 }

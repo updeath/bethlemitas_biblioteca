@@ -201,12 +201,14 @@ class InventoryController extends Controller
         $request->validate([
             'amount_descarted' => 'nullable|integer',
             'amount_donated' => 'nullable|integer',
+            'book_status' => 'nullable|integer',
         ]);
 
         $cantBook = $book->amount; //cantidad actual del total de libros
         $cantDonated = $book->amount_donated; //cantidad actual de libros donados
         $cantBookDescarted = $book->amount_descarted; //Cantidad actual de libros descartados
 
+        $State_book = $request->book_status;
         $BookDescarted = $request->amount_descarted; //Se guarda el valor de libros no donados a desacartar
         $BookDonatedDescarted = $request->amount_donated; //Se guarda el valor de libros donados a desacartar
         if ($cantBookDescarted == null) { //Si el valor de la cantidad actual de libros descartados es null entonces ese valor pasa a ser 0
@@ -220,10 +222,10 @@ class InventoryController extends Controller
         $book->amount = $newCantBook; //se guarda la nueva cantidad
         $book->amount_descarted = $BookDescarted + $cantBookDescarted + $BookDonatedDescarted; //la nueva cantidad de libros descartados es la cantidad actual mas la nueva cantidad que se esta desacrtando
         $book->amount_donated = $newCantBookDonated;
-
+        $book->id_discard_reason = $State_book;
          // Si los datos son diferentes se actualiza
-        if(empty($BookDescarted) && empty($BookDonatedDescarted)){
-            return redirect()->back()->with('info', 'No se descartó ningún libro.');
+        if((empty($BookDescarted) && empty($BookDonatedDescarted)) || $State_book == ""){
+            return redirect()->back()->with('info', 'No se descartó ningún libro. Asegurese de haber selecionado un motivo y haber puesto una cantidad a descartar valida');
         }
         elseif ($book->isDirty()) {
             $book->update();

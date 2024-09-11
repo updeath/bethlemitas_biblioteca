@@ -46,7 +46,7 @@
                         <td class="py-3 px-4 border-gray-200" style="text-align: center">{{ $inventories->author->name_author }}</td>
                         <td class="py-3 px-3 border-gray-200" style="text-align: center">{{ $inventories->editorial->name_editorial }}</td>
                         <td class="py-3 px-4 border-gray-200" style="text-align: center">{{ $inventories->publication_date }}</td>
-                        <td class="py-3 px-4 border-gray-200" style="text-align: center">{{ $inventories->estado->state }}</td>
+                        <td class="py-3 px-4 border-gray-200" style="text-align: center">{{ $inventories->estado_descarte->state }}</td>
                         <td class="py-3 px-4 border-gray-200" style="text-align: center">{{ $inventories->ubicacion->location }}</td>
                         <td class="py-3 px-4 border-gray-200" style="text-align: center">{{ $inventories->actividad->activity_occupation }}</td>
                         <td class="py-3 px-4 border-gray-200" style="text-align: center">{{ $inventories->amount_descarted }}</td>

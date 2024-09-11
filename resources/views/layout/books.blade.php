@@ -54,13 +54,13 @@
                 <input type="hidden" id="bookId" name="bookId" value="">
                 <br>
                 <label for="data-amount" class="text-sm font-medium text-gray-500" >Cantidad de ejemplares:</label>
-                <input type="number" id="data-amount" value="" style="border: none; width: 30px; text-align: center" disabled>
+                <input type="number" id="data-amount" value="" style="border: none; width: 50px; text-align: center" disabled>
 
                 <label for="data-amount-donated" class="text-sm font-medium text-gray-500" >Cantidad libros donados:</label>
-                <input type="number" id="data-amount-donated" value="" style="border: none; width: 30px; text-align: center" disabled>
+                <input type="number" id="data-amount-donated" value="" style="border: none; width: 50px; text-align: center" disabled>
                 
                 <div style="display: flex">
-                    <div style="margin-right: 57px">
+                    <div style="margin-right: 77px">
                         <label for="data-amount" class="block text-sm font-medium text-gray-500" style="padding-top: 10px;">Cantidad a descartar:</label>
                         <button type="button" onclick="buttonMenos()" style="background: #f1f5e9; border: none; cursor: pointer;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -88,6 +88,21 @@
                             </svg>
                         </button>
                     </div>
+                </div>
+
+                <!-- Estado del libro -->
+                <div class="mb-3 col-span-6 sm:col-span-3" style="margin-top: 20px">
+                    <label for="book_status" class="block text-sm font-bold text-gray-700 mb-2">Estado del libro (Motivo):</label>
+                    <select id="book_status" name="book_status" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <option value="">Select a classification</option>
+                        @foreach ($book_status as $status)
+                            @if($status->id == 3)
+                                <option value="{{ $status->id }}" {{ old('book_status') == $status->id ? 'selected' : '' }}>
+                                    {{ $status->state }}
+                                </option>
+                            @endif
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="flex justify-end mt-4">
@@ -171,7 +186,7 @@
                     popup: 'colored-toast',
                 },
                 showConfirmButton: false,
-                timer: 2500,
+                timer: 3500,
                 timerProgressBar: true,
             });
             Toast.fire({
@@ -249,7 +264,7 @@
             if (!isNaN(currentValue) &&  currentValue < maxAmountTotal) {
                 amountInput.value = currentValue + 1;
             } else {
-                amountInput.value = 1; // Si no hay valor, inicializa en 1
+                amountInput.value = 0; // Si no hay valor, inicializa en 1
             }
         }
         //Botones de descarte de libros donados
