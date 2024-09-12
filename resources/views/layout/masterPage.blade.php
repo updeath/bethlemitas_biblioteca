@@ -123,18 +123,18 @@
                                  </a>
 
                                  <div x-show="isOpen" class="ml-10">
-                                    <a href=""
+                                    <a href="{{ route('panel.editorial') }}"
                                     class="flex items-center px-3  mt-2 hover:bg-[#95A5A6] hover:text-gray-900 hover:rounded-lg font-medium">
                                           <!-- Icono si es necesario -->
                                           <span class="mx-3">• Añadir nueva Editorial</span>
                                     </a>
 
-                                    <a href=""
+                                    <a href="{{ route('panel.author') }}"
                                     class="flex items-center px-3  mt-2 hover:bg-[#95A5A6] hover:text-gray-900 hover:rounded-lg font-medium">
                                        <!-- Icono si es necesario -->
                                        <span class="mx-3">• Añadir nuevo Autor</span>
                                     </a>
-                                    <a href=""
+                                    <a href="{{ route('panel.classification') }}"
                                        class="flex items-center px-3  mt-4 hover:bg-[#95A5A6] hover:text-gray-900 hover:rounded-lg font-medium">
                                        <!-- Icono si es necesario -->
                                        <span class="mx-3">• Añadir nueva clasificación </span>
@@ -180,7 +180,7 @@
            </aside>
            <div id="main-content" class="bg-[#D5DBDB] relative overflow-y-auto lg:ml-64" style="width:85%; position:absolute; top:5rem">
                <main>
-                  <div class=" px-9 my-3 max-w-full" >
+                  <div class=" px-9 my-3 max-w-full max-h-full" >
                      @yield('content')
                   </div>
                </main>

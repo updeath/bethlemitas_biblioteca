@@ -106,9 +106,9 @@
                 </div>
 
                 <div class="flex justify-end mt-4">
-                <button id="cancel-button" type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg mr-2">Cancelar</button>
-                <button id="confirm-delete-button" type="submit" class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg">Descartar</button>
-            </div>
+                    <button id="cancel-button" type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg mr-2">Cancelar</button>
+                    <button id="confirm-delete-button" type="submit" class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg">Descartar</button>
+                </div>
             </form>
             
         </div>

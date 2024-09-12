@@ -1,10 +1,9 @@
 <?php
 
-use App\Http\Controllers\DonationsController;
+use App\Http\Controllers\CreationPanelController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\auth\AuthController;
-use App\Http\Controllers\DiscardedBookController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Middleware\PreventBackHistoryMiddleware;
 
@@ -43,6 +42,20 @@ Route::middleware([PreventBackHistoryMiddleware::class])->group(function () {
             Route::post('/{bookId}/descarted', [InventoryController::class, 'descarted'])->name('inventory.descarted');
             Route::get('/export', [InventoryController::class, 'exportInventario'])->name('export.inventory');
             Route::post('/import', [InventoryController::class, 'importInventario'])->name('import.inventory');
+        });
+
+        //Rutas relacionadas con el panel de creacion
+        Route::prefix('panel')->group(function() {
+            //Editorial
+            Route::get('/editorial', [CreationPanelController::class, 'newEditorial'])->name('panel.editorial');
+            //Athor
+            Route::get('/author', [CreationPanelController::class, 'newAuthor'])->name('panel.author');
+            //Clasificación
+            Route::get('/classification', [CreationPanelController::class, 'newClassification'])->name('panel.classification');
+            Route::put('/store/classification', [CreationPanelController::class, 'storeClassification'])->name('store.classification');
+            Route::put('/{classificationId}/classification', [CreationPanelController::class, 'updateClassification'])->name('update.classification');
+
+
         });
 
         // Rutas relacionadas con libros descartados

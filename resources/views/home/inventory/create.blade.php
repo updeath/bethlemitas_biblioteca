@@ -34,7 +34,7 @@
 </style>
 
 @section('content')
-<div class="sm:overflow:hidden bg-white shadow-md rounded-lg px-8 my-8 flex items-center" style="width: 88%; padding: 5rem ">
+<div class="sm:overflow:hidden bg-white shadow-md rounded-lg px-8 my-8 flex items-center" style="width: 88%; padding:  4.5rem ">
     <!-- Formulario en dos columnas -->
     <form class="grid grid-cols-1 md:grid-cols-2 gap-4" action="{{ route('inventory.store') }}" method="POST" enctype="multipart/form-data" style="width:100%">
         @csrf

@@ -175,7 +175,7 @@ class InventoryController extends Controller
             return redirect()->back()->with('error', 'La cantidad de libro donados superas a la cantidad total de libros.');
         }else {
             $book->amount_donated = $request->donado;
-                    // Si los datos son diferentes se actualiza
+            // Si los datos son diferentes se actualiza
             if ($book->isDirty()) {
                 $book->update();
                 return redirect()->back()->with('success', 'Libro actualizado correctamente.');
