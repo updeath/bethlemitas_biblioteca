@@ -16,18 +16,6 @@
             </svg>
         </button>
     </form>
-    
-    <div class="">
-        <form action="{{ route('import.inventory') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <label for="excelFile" class="block text-gray-700 font-medium"><em>Adjunta el archivo Excel del inventario:</em></label>
-            <input type="file" name="excelFile" id="excelFile"
-                class="mt-1 px-3 py-2 border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500">
-
-                <button type="submit"
-                class="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Importar</button>
-        </form>
-    </div>
 
     <div class="mt-5">
         <a href="{{route('export.inventory')}}" class="bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded-lg">

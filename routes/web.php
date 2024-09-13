@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ExportController;
 use App\Http\Middleware\PreventBackHistoryMiddleware;
 
 // Rutas para la autenticación
@@ -12,6 +13,13 @@ Route::prefix('/')->group(function () {
     Route::get('/', [AuthController::class, 'login'])->name('login');
     Route::post('/', [AuthController::class, 'authenticate'])->name('authenticate');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+//Ruta para exportar
+Route::prefix('export')->group(function() {
+    Route::get('/inventory', [ExportController::class, 'exportInventory'])->name('export.inventory');
+    Route::get('/donated', [ExportController::class, 'exportDonated'])->name('export.donated');
+    Route::get('/discards', [ExportController::class, 'exportDiscards'])->name('export.discards');
 });
 
 // Grupo de rutas con middleware para prevenir el historial de retroceso
@@ -59,7 +67,6 @@ Route::middleware([PreventBackHistoryMiddleware::class])->group(function () {
             Route::get('/classification', [CreationPanelController::class, 'newClassification'])->name('panel.classification');
             Route::put('/store/classification', [CreationPanelController::class, 'storeClassification'])->name('store.classification');
             Route::put('/{classificationId}/classification', [CreationPanelController::class, 'updateClassification'])->name('update.classification');
-
 
         });
 

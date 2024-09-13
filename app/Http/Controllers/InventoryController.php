@@ -228,10 +228,6 @@ class InventoryController extends Controller
             return redirect()->back()->with('success', 'Libro descartado correctamente.');
         } 
         
-
     }
-
-    //Controlador para exportar
-
     
 }

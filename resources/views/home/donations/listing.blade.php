@@ -16,6 +16,11 @@
             </svg>
         </button>
     </form>
+    <div class="mt-5">
+        <a href="{{ route('export.donated') }}" class="bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded-lg">
+            <i class="fas fa-download mr-2"></i> Exportar excel
+        </a>
+    </div>
 @endsection
 
 @section('table')
