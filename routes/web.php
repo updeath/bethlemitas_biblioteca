@@ -40,17 +40,22 @@ Route::middleware([PreventBackHistoryMiddleware::class])->group(function () {
             Route::get('/{inventory}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
             Route::put('/{inventory}', [InventoryController::class, 'update'])->name('inventory.update');
             Route::post('/{bookId}/descarted', [InventoryController::class, 'descarted'])->name('inventory.descarted');
-            Route::get('/export', [InventoryController::class, 'exportInventario'])->name('export.inventory');
-            Route::post('/import', [InventoryController::class, 'importInventario'])->name('import.inventory');
         });
 
         //Rutas relacionadas con el panel de creacion
         Route::prefix('panel')->group(function() {
-            //Editorial
+
+            //******************************** Editorial ***********************************
             Route::get('/editorial', [CreationPanelController::class, 'newEditorial'])->name('panel.editorial');
-            //Athor
+            Route::put('/store/editorial', [CreationPanelController::class, 'storeEditorial'])->name('store.editorial');
+            Route::put('/{editorialId}/editorial', [CreationPanelController::class, 'updateEditorial'])->name('update.editorial');
+
+            //************************ Athor ***********************************
             Route::get('/author', [CreationPanelController::class, 'newAuthor'])->name('panel.author');
-            //Clasificación
+            Route::put('/store/author', [CreationPanelController::class, 'storeAuthor'])->name('store.author');
+            Route::put('/{authorId}/author', [CreationPanelController::class, 'updateAuthor'])->name('update.author');
+
+            //***********************  Clasificación ******************************** 
             Route::get('/classification', [CreationPanelController::class, 'newClassification'])->name('panel.classification');
             Route::put('/store/classification', [CreationPanelController::class, 'storeClassification'])->name('store.classification');
             Route::put('/{classificationId}/classification', [CreationPanelController::class, 'updateClassification'])->name('update.classification');

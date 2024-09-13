@@ -10,10 +10,6 @@ use App\Models\Book_statu;
 use App\Models\Activity;
 use App\Models\Book_location;
 use Illuminate\Http\Request;
-use App\Exports\InventoryExport;
-use App\Imports\InventoryImport;
-use Maatwebsite\Excel\Facades\Excel;
-// use App\Imports\InventoryImport;
 use Illuminate\Support\Facades\Log;
 
 class InventoryController extends Controller
@@ -236,28 +232,6 @@ class InventoryController extends Controller
     }
 
     //Controlador para exportar
-    public function exportInventario()
-    {
-        $fileName = 'Inventario.xlsx';
-        Excel::store(new InventoryExport, $fileName);
 
-        return response()->download(storage_path('app/' . $fileName));
-    }
-
-    //Controlador para importar
-    public function importInventario(Request $request)
-    {
-        $request->validate([
-            'excelFile' => 'required|mimes:xlsx,csv',
-        ]);
-
-        try {
-            $file = $request->file('excelFile');
-            Excel::import(new InventoryImport, $file);
-            return redirect()->back()->with('success', 'Importación Exitosa');
-        } catch (\Exception $eh) {
-            return redirect()->back()->with('error', 'Importación Erronea');
-        }
-    }
     
 }

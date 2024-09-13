@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('classifications', function (Blueprint $table) {
             $table->id();
-            $table->string('clasifPGC')->unique();
-            $table->string('name_classification');
+            $table->string('clasifPGC')->unique()->nullable();
+            $table->string('name_classification')->nullable();
             $table->timestamps();
         });
     }
