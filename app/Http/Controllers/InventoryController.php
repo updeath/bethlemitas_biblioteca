@@ -94,31 +94,54 @@ class InventoryController extends Controller
             'author' => 'required|integer',
             'amount' => 'required|integer|min:1',
             'editorial' => 'required|integer',
-            'publication_date' => 'required|date',
+            'publication_date' => 'nullable|integer',
             'book_status' => 'required|integer',
             'location' => 'required|integer',
             'activite' => 'required|integer',
             'donado' => 'nullable|integer',
         ]);
 
-        $book = new Inventory();
-        $book->ISBN = $request->input('isbn');
-        $book->id_clasifPGC = $request->input('clasifpgc');
-        $book->title = $request->input('title');
-        $book->id_author = $request->input('author');
-        $book->amount = $request->input('amount');
-        $book->id_editorial = $request->input('editorial');
-        $book->publication_date = $request->input('publication_date');
-        $book->id_status = $request->input('book_status');
-        $book->id_location = $request->input('location');
-        $book->id_activity = $request->input('activite');
-        if ($request->input('donado') > $request->input('amount')){
-            return redirect()->back()->with('error', 'La cantidad de libro donados superas a la cantidad total de libros.');
-        } else {
-            $book->amount_donated = $request->input('donado');
-            $book->save();
+        $titleRepeat = $request->input('title');
+        $authorRepeat = $request->input('author');
+        $editorialRepeat = $request->input('editorial');
 
-            return redirect()->back()->with('success', 'Registro agregado exitosamente.');
+        $bookExist = Inventory::where('title', $titleRepeat)
+                              ->where('id_author', $authorRepeat)
+                              ->where('id_editorial', $editorialRepeat)
+                              ->first();
+        
+        if ($bookExist) {
+            if ($request->input('donado') > $request->input('amount')){
+                return redirect()->back()->with('error', 'La cantidad de libro donados superas a la cantidad total de libros.');
+            } else {
+                $bookExist->amount += $request->input('amount');
+                $bookExist->amount_donated = $request->input('donado');
+                $bookExist->save();
+
+                return redirect()->back()->with('success', 'Registro agregado exitosamente.');
+            }  
+        }
+
+        else {
+            $book = new Inventory();
+            $book->ISBN = $request->input('isbn');
+            $book->id_clasifPGC = $request->input('clasifpgc');
+            $book->title = $request->input('title');
+            $book->id_author = $request->input('author');
+            $book->amount = $request->input('amount');
+            $book->id_editorial = $request->input('editorial');
+            $book->publication_date = $request->input('publication_date');
+            $book->id_status = $request->input('book_status');
+            $book->id_location = $request->input('location');
+            $book->id_activity = $request->input('activite');
+            if ($request->input('donado') > $request->input('amount')){
+                return redirect()->back()->with('error', 'La cantidad de libro donados superas a la cantidad total de libros.');
+            } else {
+                $book->amount_donated = $request->input('donado');
+                $book->save();
+
+                return redirect()->back()->with('success', 'Registro agregado exitosamente.');
+            }
         }
     }
 
@@ -150,7 +173,7 @@ class InventoryController extends Controller
             'author' => 'required|integer',
             'amount' => 'required|integer|min:1',
             'editorial' => 'required|integer',
-            'publication_date' => 'required|date',
+            'publication_date' => 'required|integer',
             'book_status' => 'required|integer',
             'location' => 'required|integer',
             'activite' => 'required|integer',
@@ -179,8 +202,6 @@ class InventoryController extends Controller
                 return redirect()->back()->with('info', 'No se realizó ninguna actualización.');
             }
         }
-        
-
 
     }
 

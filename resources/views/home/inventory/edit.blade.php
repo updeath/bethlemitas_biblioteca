@@ -139,7 +139,7 @@
             <!-- Fecha de publicacion -->
             <div class="mb-3">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="publication_date">Fecha de publicación</label>
-                <input id="publication_date" name="publication_date" value="{{ $inventory->publication_date }}" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date">
+                <input id="publication_date" name="publication_date" value="{{ $inventory->publication_date }}" class="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" min="1800" max="2099" placeholder="YYYY">
                 @error('publication_date')
                     <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Incorrecto</span></p>
                 @enderror

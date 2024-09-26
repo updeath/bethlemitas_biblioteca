@@ -22,7 +22,7 @@ return new class extends Migration
             $table->tinyInteger('amount');
             $table->unsignedBigInteger('id_editorial');
             $table->foreign('id_editorial')->references('id')->on('editorials');
-            $table->date('publication_date');
+            $table->integer('publication_date')->nullable();
             $table->unsignedBigInteger('id_status');
             $table->foreign('id_status')->references('id')->on('book_status');
             $table->unsignedBigInteger('id_discard_reason')->nullable();
